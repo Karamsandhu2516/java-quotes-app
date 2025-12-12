@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: quote-pod
+  namespace: quoteapp
+  labels:
+    app: quotes
+    tier: backend
+spec:
+  containers:
+  - name: quotes-app
+    image: quotesapp:latest
+    imagePullPolicy: Never
+    ports:
+    - containerPort: 8000
+    resources:
+      requests:
+        memory: "256Mi"
+        cpu: "100m"
+      limits:
+        memory: "512Mi"
+        cpu: "500m"
+

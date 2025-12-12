@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: quotes-app
+  namespace: quoteapp
+  labels:
+    app: quotes
+    tier: backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: quotes
+      tier: backend
+  template:
+    metadata:
+      labels:
+        app: quotes
+        tier: backend
+    spec:
+      containers:
+      - name: quotes-app
+        image: quotesapp:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8000
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8000
+          initialDelaySeconds: 5
+          periodSeconds: 5
